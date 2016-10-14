@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Citilabs : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Citilabs</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Citilabs">View on GitHub</a>
+
+          <h1 id="project_title">Citilabs</h1>
+          <h2 id="project_tagline"></h2>
+
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>
+<a id="welcome-to-the-citilabs-github-page" class="anchor" href="#welcome-to-the-citilabs-github-page" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome to the Citilabs GitHub page.</h3>
+
+<p>Here you will find information on open source projects provided by Citilabs.</p>
+
+<h3>
+<a id="omxlib" class="anchor" href="#omxlib" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>OMXLib</h3>
+
+<p>Citilabs is proud to present our Cube OMX library implementation and specification to the community. Starting with Cube 6.4.2, Cube provides support for reading and writing Cube OMX files. This section provides some detailed information about the library.</p>
+
+<p>OMXLib is a complete implementation of the specification described in <a href="CubeOMX_0.3.pdf">this</a>. The library is written in C++ and fully implements the specification. However, OMXLib may be utilized from a variety of programming languages. We provide API wrappers that allow the C++ compiled binaries to be utilized directly by languages and frameworks such as Python, Java, C#/.NET, and potentially many others. </p>
+
+<p>This is a key benefit of OMXLib, there is no need for any other implementation and there is no worry as to whether an implementation from one organization written for a particular language will be compatible with or have the same performance or other behavior as one from another organization, since the primary OMXLib library is written in a single code-base, with API wrappers, which essentially act as a "front-end," for other languages such as Java, Python, etc.</p>
+
+<p>OMXLib is also a very intuitive API. Great care was taken to properly hide the user from specific implementation details such as the backing data-store; this means that users of the API do not need to know or use any HDF5 specific functions. The API encapsulates those details and the public header files do not introduce unnecessary dependencies (utilizing the PIMPL idiom, for C++ aficionados). OMXLib provides a variety of facilities for inspecting aspects of an HDF5 file such as what matrices or zonal references, the number of zones, the data compression levels, attributes, and many others. The Cube OMX specification also provides built-in facilities for supporting feature-detection and seamless extensibility (via the OMX_CAPABILITIES attribute). The OMXLib API wrappers also attempt to provide a straight-forward interface to the library, while maintaining high performance. That is, native data buffers are utilized rather than language or framework specific data types that may have performance pitfalls. For instance, to utilize OMXLib from C#, you do not create a two-dimensional C# array or anything like that, the library provides a mechanism for allocating and disposing native data buffers, which eliminates performance problems due to cache misses or other framework specific details.</p>
+
+<p>The C++ project provides a simple test utility called "omxbench," which may be used either as a simple way to verify it's performance or as a programming example. The method names in the public C++ headers largely match those in the API wrappers (i.e. the C++ library has a method called getZonalReferences() and the Python wrapper has a method with the exact same name).</p>
+
+<p>Here is an example writing a simple OMX file with one matrix.</p>
+
+<pre><code>f = omx.OmxFile("test.omx")
+
+# set this OMX file to have 1000 zones
+f.openWithTruncate(1000)
+# by default, the matrix data type will be Double, if one is not specified
+matrix = f.addMatrix("firstMatrix")
+
+# get a native buffer for row data
+matrixDataRow = omx.OmxDoubleArray(zones)
+
+# we will write incrementing integers into the matrix
+v = 1
+for i in range(zones):
+    # populating the list that will be used to write to a zonal reference
+    for j in range(zones):
+        matrixDataRow[j] = random.random() * 100000
+        v += 1
+
+    # write the data row to the file
+    m.writeRow(i, matrixDataRow)
+
+# close the file
+f.close()
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
